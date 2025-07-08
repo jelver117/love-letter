@@ -1,14 +1,13 @@
-# love-letter
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>给你的专属道歉信</title>
+    <title>给最可爱の你</title>
     <style>
+        /* 萌系粉色渐变背景 */
         body {
-            background: linear-gradient(to right, #e53935, #e35d5b);
-            font-family: "PingFang SC", sans-serif;
-            color: white;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            font-family: "Comic Sans MS", "PingFang SC", cursive;
             text-align: center;
             margin: 0;
             padding: 20px;
@@ -16,96 +15,216 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            overflow: hidden;
         }
-        
+
+        /* 毛玻璃效果容器 */
         .container {
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             padding: 30px;
             max-width: 400px;
             margin: 0 auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 32px rgba(255, 155, 158, 0.3);
+            border: 2px dashed #ff6b88;
+            position: relative;
         }
-        
+
+        /* 跳动标题 */
         h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
+            color: #ff4f81;
+            font-size: 28px;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px rgba(255, 192, 203, 0.6);
+            animation: bounce 1.5s infinite alternate;
         }
-        
-        .password-section {
-            margin: 20px 0;
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
         }
-        
+
+        /* 猫爪输入框 */
         input {
-            padding: 10px;
+            padding: 12px;
             border: none;
-            border-radius: 20px;
+            border-radius: 25px;
             width: 70%;
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            box-shadow: 0 4px 15px rgba(255, 105, 140, 0.3);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23ff6b88" d="M12 15c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: 10px center;
+            padding-left: 40px;
         }
-        
+
+        /* 爱心按钮 */
         button {
-            background: #e53935;
+            background: linear-gradient(to right, #ff6b88, #ff8e8e);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            margin-top: 10px;
+            padding: 12px 25px;
+            border-radius: 25px;
+            margin-top: 20px;
             cursor: pointer;
-            transition: background 0.3s;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 105, 140, 0.4);
+            position: relative;
+            overflow: hidden;
         }
-        
+
         button:hover {
-            background: #c62828;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 105, 140, 0.6);
         }
-        
+
+        button:after {
+            content: "❤️";
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: all 0.5s;
+        }
+
+        button:hover:after {
+            top: -10px;
+            opacity: 1;
+        }
+
+        /* 漂浮的爱心背景 */
+        .hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-100px) rotate(180deg); }
+            100% { transform: translateY(0) rotate(360deg); }
+        }
+
+        /* 解锁后的惊喜效果 */
         .message {
             display: none;
-            margin-top: 20px;
-            text-align: left;
-            line-height: 1.6;
+            animation: fadeIn 1.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .cute-cat {
+            width: 120px;
+            margin: 20px auto;
+            animation: wiggle 2s infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
         }
     </style>
 </head>
 <body>
+    <!-- 漂浮的爱心背景 -->
+    <div class="hearts" id="hearts"></div>
+
     <div class="container">
-        <h1>🔐 请输入专属密码解锁道歉信</h1>
+        <h1>🐾 请输入魔法密码 🐾</h1>
         
         <div class="password-section">
             <input type="password" id="password" placeholder="输入我们的纪念日">
-            <button onclick="checkPassword()">解锁</button>
+            <button onclick="checkPassword()">解锁我的心意</button>
         </div>
         
         <div class="message" id="message">
-            <h2>亲爱的<span id="herName"></span>：</h2>
-            <p>对不起，我不小心取消了网易云关注...</p>
-            <p>但我们的回忆不会因为数字清零而消失 ❤️</p>
-            <p>从今天起，我申请成为你的<b>终身VIP</b>！</p>
+            <img src="https://i.imgur.com/3NKy8wl.png" class="cute-cat" alt="道歉猫猫">
+            <h2>亲爱的小宝贝：</h2>
+            <p>我不小心弄丢了我们的云村徽章...<br>但每一天和你听歌的回忆，都藏在我的心里 💌</p>
+            <p>从今天起，我申请成为你的<br><b>终身VIP听众</b>！</p>
+            <p style="font-size: 12px; color: #ff6b88;">PS：点击猫猫有惊喜~</p>
         </div>
     </div>
 
+    <audio id="bgMusic" loop>
+        <source src="https://music.163.com/song/media/outer/url?id=1824045033.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        // ✅ 在这里修改密码和她的名字！
-        const correctPassword = "117"; // 改成你的密码（比如纪念日）
-        const herName = "最宝贝的空空大人"; // 改成你对她的昵称
-        
-        function checkPassword() {
-            const input = document.getElementById("password").value;
-            if (input === correctPassword) {
-                document.getElementById("message").style.display = "block";
-                document.getElementById("herName").textContent = herName;
-                document.getElementById("password").style.display = "none";
-                document.querySelector("button").style.display = "none";
-            } else {
-                alert("密码错误！提示：想想有意义的数字~");
+        // 设置密码（改成你们的纪念日）
+        const correctPassword = "0520";
+        const herName = "小可爱";
+
+        // 创建漂浮爱心
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const colors = ['#ff6b88', '#ff8e8e', '#ffb3b3', '#ffd3d3'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                heart.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                heartsContainer.appendChild(heart);
             }
         }
-        
-        // 按回车也能解锁
-        document.getElementById("password").addEventListener("keyup", function(event) {
-            if (event.key === "Enter") {
-                checkPassword();
+
+        // 密码验证
+        function checkPassword() {
+            const input = document.getElementById('password').value;
+            if (input === correctPassword) {
+                document.getElementById('message').style.display = 'block';
+                document.querySelector('.password-section').style.display = 'none';
+                
+                // 播放背景音乐
+                document.getElementById('bgMusic').play();
+                
+                // 爱心雨特效
+                setInterval(() => {
+                    createHearts();
+                }, 300);
+            } else {
+                alert('密码不对哦~试试我们的纪念日？');
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
             }
+        }
+
+        // 猫猫点击事件
+        document.querySelector('.cute-cat').addEventListener('click', function() {
+            alert('喵~ 原谅我好不好？(｡･ω･｡)ﾉ♡');
         });
+
+        // 页面加载时初始化
+        window.onload = function() {
+            createHearts();
+            document.getElementById('password').focus();
+        };
     </script>
 </body>
 </html>
