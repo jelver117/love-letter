@@ -132,7 +132,7 @@
             transform: translateY(-2px);
         }
 
-        /* 精致爱心背景 */
+        /* 精致爱心背景 - 减少数量提升性能 */
         .hearts {
             position: absolute;
             width: 100%;
@@ -146,16 +146,16 @@
 
         .heart {
             position: absolute;
-            font-size: 20px;
+            font-size: 16px;
             animation: float 6s ease-in-out infinite;
             opacity: 0.7;
             filter: drop-shadow(0 0 5px rgba(255, 105, 140, 0.5));
+            will-change: transform, opacity;
         }
 
         @keyframes float {
-            0% { transform: translateY(0) rotate(0deg) scale(1); }
-            50% { transform: translateY(-100px) rotate(180deg) scale(1.2); }
-            100% { transform: translateY(0) rotate(360deg) scale(1); }
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-80px) rotate(180deg); }
         }
 
         /* 精致消息框 */
@@ -170,20 +170,15 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Live2D容器 */
-        #live2d-container {
+        /* 3D猫猫容器 */
+        #cat-3d-container {
             position: fixed;
             right: 20px;
             bottom: 20px;
             width: 280px;
             height: 280px;
             z-index: 100;
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
-            transition: all 0.5s ease;
-        }
-
-        #live2d-container:hover {
-            transform: scale(1.05);
+            cursor: pointer;
         }
 
         /* 音乐播放器控件 */
@@ -225,7 +220,7 @@
                 font-size: 1.8rem;
             }
             
-            #live2d-container {
+            #cat-3d-container {
                 width: 200px;
                 height: 200px;
                 right: 10px;
@@ -235,9 +230,10 @@
     </style>
     <!-- 引入字体 -->
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
-    <!-- 引入Live2D库 -->
-    <script src="https://cdn.jsdelivr.net/npm/pixi.js@5.x/dist/pixi.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
+    <!-- 引入Three.js库 -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
     <!-- 漂浮的爱心背景 -->
@@ -247,20 +243,20 @@
         <h1>🐾 请输入爱的密码 🐾</h1>
         
         <div class="password-section">
-            <input type="password" id="password" placeholder="输入我们的纪念日">
+            <input type="password" id="password" placeholder="输入我们的纪念日" autocomplete="off">
             <button onclick="checkPassword()">解锁我的心意 ❤️</button>
         </div>
         
         <div class="message" id="message">
-            <h2>亲爱的小宝贝：</h2>
-            <p>我不小心弄丢了我们的云村徽章...<br>但每一天和你听歌的回忆，都藏在我的心里 💌</p >
-            <p>从今天起，我申请成为你的<br><b style="color: #ff6b88;">终身VIP听众</b>！</p >
-            <p style="font-size: 0.8rem; color: #ff6b88; margin-top: 30px;">❤️ 点击右下角猫猫有惊喜 ❤️</p >
+            <h2>亲爱的空空大人：</h2>
+            <p>我不小心弄丢了我们的云村徽章...<br>但每一天和你听歌的回忆，都藏在我的心里 💌</p>
+            <p>从今天起，我申请成为你的<br><b style="color: #ff6b88;">终身VIP听众</b>！</p>
+            <p style="font-size: 0.8rem; color: #ff6b88; margin-top: 30px;">❤️ 点击3D猫猫有惊喜 ❤️</p>
         </div>
     </div>
 
-    <!-- Live2D猫猫容器 -->
-    <div id="live2d-container"></div>
+    <!-- 3D猫猫容器 -->
+    <div id="cat-3d-container"></div>
 
     <!-- 音乐播放器控件 -->
     <div class="music-control" id="musicControl" style="display: none;">
@@ -279,26 +275,126 @@
 
     <script>
         // 设置密码（改成你们的纪念日）
-        const correctPassword = "52013140212";
-        const herName = "最可爱的空空大人";
+        const correctPassword = "52013150212";
+        const herName = "空空大人";
+        
+        // 3D场景变量
+        let scene, camera, renderer, catModel, mixer, clock;
 
-        // 创建漂浮爱心
+        // 创建漂浮爱心（数量减少到8个提升性能）
         function createHearts() {
             const heartsContainer = document.getElementById('hearts');
-            const colors = ['#ff6b88', '#ff8e8e', '#ffb3b3', '#ffd3d3'];
+            const colors = ['#ff6b88', '#ff8e8e', '#ffb3b3'];
             
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 8; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'heart';
                 heart.innerHTML = '❤️';
                 heart.style.left = Math.random() * 100 + 'vw';
                 heart.style.top = Math.random() * 100 + 'vh';
-                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-                heart.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                heart.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                heart.style.animationDuration = (Math.random() * 8 + 4) + 's';
                 heart.style.animationDelay = (Math.random() * 5) + 's';
                 heart.style.color = colors[Math.floor(Math.random() * colors.length)];
                 heartsContainer.appendChild(heart);
             }
+        }
+
+        // 初始化3D场景
+        function init3DScene() {
+            // 创建场景
+            scene = new THREE.Scene();
+            scene.background = null; // 透明背景
+            
+            // 创建相机
+            camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+            camera.position.z = 2;
+            camera.position.y = 0.5;
+            
+            // 创建渲染器
+            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(280, 280);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('cat-3d-container').appendChild(renderer.domElement);
+            
+            // 添加光源
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+            
+            // 加载3D猫猫模型
+            const loader = new THREE.GLTFLoader();
+            clock = new THREE.Clock();
+            
+            // 使用可用的3D猫猫模型（来自网络）
+            loader.load(
+                'https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/FluffyCat/glTF/FluffyCat.gltf',
+                (gltf) => {
+                    catModel = gltf.scene;
+                    catModel.scale.set(0.5, 0.5, 0.5);
+                    catModel.position.y = -0.5;
+                    
+                    // 设置动画混合器
+                    mixer = new THREE.AnimationMixer(catModel);
+                    const clips = gltf.animations;
+                    
+                    // 播放所有动画
+                    clips.forEach((clip) => {
+                        const action = mixer.clipAction(clip);
+                        action.play();
+                    });
+                    
+                    scene.add(catModel);
+                    
+                    // 点击事件
+                    renderer.domElement.addEventListener('click', () => {
+                        showLoveMessage();
+                        // 点击时播放特殊动画
+                        if (mixer && clips.length > 0) {
+                            const randomClip = clips[Math.floor(Math.random() * clips.length)];
+                            mixer.clipAction(randomClip).reset().play();
+                        }
+                    });
+                },
+                undefined,
+                (error) => {
+                    console.error('加载3D模型失败:', error);
+                    // 如果加载失败，显示回退图片
+                    document.getElementById('cat-3d-container').innerHTML = `
+                        <img src="https://cdn.jsdelivr.net/gh/moezx/cdn@3.7.9/img/small/av60922979.jpeg" 
+                             style="width:100%;height:100%;object-fit:cover;border-radius:50%;cursor:pointer;"
+                             onclick="showLoveMessage()">`;
+                }
+            );
+            
+            // 动画循环
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                // 更新动画混合器
+                if (mixer) {
+                    mixer.update(clock.getDelta());
+                }
+                
+                // 让猫猫缓慢旋转
+                if (catModel) {
+                    catModel.rotation.y += 0.005;
+                }
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // 窗口大小调整
+            window.addEventListener('resize', () => {
+                camera.aspect = 1;
+                camera.updateProjectionMatrix();
+                renderer.setSize(280, 280);
+            });
         }
 
         // 密码验证
@@ -308,21 +404,24 @@
                 document.getElementById('message').style.display = 'block';
                 document.querySelector('.password-section').style.display = 'none';
                 
-                // 播放背景音乐
+                // 尝试播放音乐
                 const bgMusic = document.getElementById('bgMusic');
-                bgMusic.play();
-                document.getElementById('musicControl').style.display = 'flex';
+                bgMusic.volume = 0.3;
+                bgMusic.play().then(() => {
+                    document.getElementById('musicControl').style.display = 'flex';
+                }).catch(e => {
+                    // 如果自动播放被阻止，显示播放按钮
+                    document.getElementById('musicControl').style.display = 'flex';
+                    console.log("自动播放被阻止:", e);
+                });
                 
-                // 加载Live2D模型
-                loadLive2D();
+                // 初始化3D场景
+                init3DScene();
                 
-                // 爱心雨特效
+                // 爱心雨特效（间隔增大到800ms减少性能消耗）
                 setInterval(() => {
                     createHearts();
-                }, 500);
-                
-                // 容器动画
-                document.querySelector('.container').style.transform = 'perspective(1000px) rotateY(0) rotateX(0)';
+                }, 800);
                 
             } else {
                 // 错误动画
@@ -338,68 +437,33 @@
             }
         }
 
-        // 加载Live2D模型
-        async function loadLive2D() {
-            try {
-                const live2dModel = await PIXI.live2d.Live2DModel.from(
-                    'https://cdn.jsdelivr.net/gh/guansss/pixi-live2d-display/test/assets/haru/haru_greeter_t03.model3.json'
-                );
+        // 点击猫猫显示消息
+        function showLoveMessage() {
+            const messages = [
+                "你是我的小太阳☀️",
+                "爱你三千遍❤️",
+                "今天也想见到你！",
+                "你是我最甜的糖🍬",
+                "想和你听一辈子的歌"
+            ];
+            alert(messages[Math.floor(Math.random() * messages.length)]);
+            
+            // 添加爱心特效
+            for (let i = 0; i < 5; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.position = 'fixed';
+                heart.style.left = (Math.random() * 60 + 20) + 'vw';
+                heart.style.bottom = '100px';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.animation = `float ${Math.random() * 2 + 1}s ease-out forwards`;
+                heart.style.color = `hsl(${Math.random() * 30 + 330}, 100%, 70%)`;
+                document.body.appendChild(heart);
                 
-                const app = new PIXI.Application({
-                    transparent: true,
-                    autoStart: true,
-                    width: 280,
-                    height: 280
-                });
-                
-                document.getElementById('live2d-container').appendChild(app.view);
-                app.stage.addChild(live2dModel);
-                
-                // 调整模型大小和位置
-                live2dModel.scale.set(0.13);
-                live2dModel.x = 140;
-                live2dModel.y = 280;
-                
-                // 点击事件
-                live2dModel.on('pointertap', () => {
-                    // 创建爱心爆炸效果
-                    for (let i = 0; i < 20; i++) {
-                        const heart = document.createElement('div');
-                        heart.className = 'heart';
-                        heart.innerHTML = '❤️';
-                        heart.style.position = 'fixed';
-                        heart.style.left = (Math.random() * 100 + 70) + 'vw';
-                        heart.style.bottom = '100px';
-                        heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-                        heart.style.animation = `explode ${Math.random() * 2 + 1}s ease-out forwards`;
-                        heart.style.color = `hsl(${Math.random() * 30 + 330}, 100%, 70%)`;
-                        document.body.appendChild(heart);
-                        
-                        // 动画结束后移除
-                        setTimeout(() => {
-                            heart.remove();
-                        }, 1000);
-                    }
-                    
-                    // 显示特别消息
-                    const messages = [
-                        "最喜欢你了！",
-                        "你是我的唯一❤️",
-                        "永远爱你！",
-                        "喵~抱抱！",
-                        "你是最棒的！"
-                    ];
-                    alert(messages[Math.floor(Math.random() * messages.length)]);
-                });
-                
-                live2dModel.interactive = true;
-                live2dModel.cursor = 'pointer';
-                
-            } catch (e) {
-                console.error('加载Live2D模型失败:', e);
-                // 如果加载失败，显示回退图片
-                const container = document.getElementById('live2d-container');
-                container.innerHTML = '<img src="https://i.imgur.com/3NKy8wl.png" style="width:100%;height:100%;object-fit:contain;">';
+                setTimeout(() => {
+                    heart.remove();
+                }, 1000);
             }
         }
 
@@ -413,6 +477,7 @@
                         <path d="M8 5V19L19 12L8 5Z" fill="#ff6b88"/>
                     </svg>
                 `;
+                document.querySelector('.music-info').textContent = "正在播放: Troye Sivan - BLUE";
             } else {
                 bgMusic.pause();
                 this.innerHTML = `
@@ -421,6 +486,7 @@
                         <rect x="14" y="5" width="4" height="14" fill="#ff6b88"/>
                     </svg>
                 `;
+                document.querySelector('.music-info').textContent = "已暂停: Troye Sivan - BLUE";
             }
         });
 
