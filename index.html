@@ -1,105 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>给最可爱の你</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给最可爱的你 ❤️</title>
     <style>
-        /* 萌系粉色渐变背景 */
+        /* 精致渐变背景 */
         body {
-            background: linear-gradient(to right, #ff9a9e, #fad0c4);
-            font-family: "Comic Sans MS", "PingFang SC", cursive;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #a18cd1 100%);
+            font-family: 'Ma Shan Zheng', 'Comic Sans MS', cursive, sans-serif;
             text-align: center;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
             overflow: hidden;
-        }
-
-        /* 毛玻璃效果容器 */
-        .container {
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 400px;
-            margin: 0 auto;
-            box-shadow: 0 8px 32px rgba(255, 155, 158, 0.3);
-            border: 2px dashed #ff6b88;
             position: relative;
         }
 
-        /* 跳动标题 */
+        /* 精致毛玻璃容器 */
+        .container {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 40px;
+            width: 85%;
+            max-width: 500px;
+            box-shadow: 0 12px 40px rgba(255, 105, 140, 0.3);
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 10;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .container:hover {
+            transform: perspective(1000px) rotateY(5deg) rotateX(2deg);
+            box-shadow: 0 15px 50px rgba(255, 105, 140, 0.4);
+        }
+
+        /* 精致标题 */
         h1 {
             color: #ff4f81;
-            font-size: 28px;
-            margin-bottom: 25px;
-            text-shadow: 2px 2px 4px rgba(255, 192, 203, 0.6);
-            animation: bounce 1.5s infinite alternate;
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 8px rgba(255, 192, 203, 0.6);
+            position: relative;
+            display: inline-block;
         }
 
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-10px); }
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, #ff6b88, #ff8e8e);
+            border-radius: 3px;
         }
 
-        /* 猫爪输入框 */
+        /* 精致输入框 */
         input {
-            padding: 12px;
+            padding: 14px 20px;
             border: none;
-            border-radius: 25px;
-            width: 70%;
-            background: rgba(255, 255, 255, 0.8);
-            font-size: 16px;
+            border-radius: 30px;
+            width: 75%;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
             text-align: center;
             outline: none;
-            box-shadow: 0 4px 15px rgba(255, 105, 140, 0.3);
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23ff6b88" d="M12 15c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z"/></svg>');
-            background-repeat: no-repeat;
-            background-position: 10px center;
-            padding-left: 40px;
+            box-shadow: 0 6px 20px rgba(255, 105, 140, 0.2);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
         }
 
-        /* 爱心按钮 */
+        input:focus {
+            box-shadow: 0 8px 25px rgba(255, 105, 140, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* 精致按钮 */
         button {
-            background: linear-gradient(to right, #ff6b88, #ff8e8e);
+            background: linear-gradient(135deg, #ff6b88 0%, #ff8e8e 100%);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            margin-top: 20px;
+            padding: 14px 30px;
+            border-radius: 30px;
+            margin-top: 15px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(255, 105, 140, 0.4);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 8px 25px rgba(255, 105, 140, 0.3);
             position: relative;
             overflow: hidden;
+            z-index: 1;
+        }
+
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff8e8e 0%, #ff6b88 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 105, 140, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(255, 105, 140, 0.5);
         }
 
-        button:after {
-            content: "❤️";
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: all 0.5s;
-        }
-
-        button:hover:after {
-            top: -10px;
+        button:hover::before {
             opacity: 1;
         }
 
-        /* 漂浮的爱心背景 */
+        button:active {
+            transform: translateY(-2px);
+        }
+
+        /* 精致爱心背景 */
         .hearts {
             position: absolute;
             width: 100%;
@@ -107,81 +140,154 @@
             top: 0;
             left: 0;
             pointer-events: none;
-            z-index: -1;
+            z-index: 0;
+            overflow: hidden;
         }
 
         .heart {
             position: absolute;
             font-size: 20px;
             animation: float 6s ease-in-out infinite;
-            opacity: 0.6;
+            opacity: 0.7;
+            filter: drop-shadow(0 0 5px rgba(255, 105, 140, 0.5));
         }
 
         @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-100px) rotate(180deg); }
-            100% { transform: translateY(0) rotate(360deg); }
+            0% { transform: translateY(0) rotate(0deg) scale(1); }
+            50% { transform: translateY(-100px) rotate(180deg) scale(1.2); }
+            100% { transform: translateY(0) rotate(360deg) scale(1); }
         }
 
-        /* 解锁后的惊喜效果 */
+        /* 精致消息框 */
         .message {
             display: none;
-            animation: fadeIn 1.5s;
+            animation: fadeIn 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+            position: relative;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .cute-cat {
-            width: 120px;
-            margin: 20px auto;
-            animation: wiggle 2s infinite;
+        /* Live2D容器 */
+        #live2d-container {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 280px;
+            height: 280px;
+            z-index: 100;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+            transition: all 0.5s ease;
         }
 
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
+        #live2d-container:hover {
+            transform: scale(1.05);
+        }
+
+        /* 音乐播放器控件 */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .music-control:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-3px);
+        }
+
+        .music-info {
+            margin-left: 10px;
+            text-align: left;
+            color: #ff6b88;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            #live2d-container {
+                width: 200px;
+                height: 200px;
+                right: 10px;
+                bottom: 10px;
+            }
         }
     </style>
+    <!-- 引入字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <!-- 引入Live2D库 -->
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@5.x/dist/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
 </head>
 <body>
     <!-- 漂浮的爱心背景 -->
     <div class="hearts" id="hearts"></div>
 
     <div class="container">
-        <h1>🐾 请输入魔法密码 🐾</h1>
+        <h1>🐾 请输入爱的密码 🐾</h1>
         
         <div class="password-section">
             <input type="password" id="password" placeholder="输入我们的纪念日">
-            <button onclick="checkPassword()">解锁我的心意</button>
+            <button onclick="checkPassword()">解锁我的心意 ❤️</button>
         </div>
         
         <div class="message" id="message">
-            <img src="https://i.imgur.com/3NKy8wl.png" class="cute-cat" alt="道歉猫猫">
             <h2>亲爱的小宝贝：</h2>
-            <p>我不小心弄丢了我们的云村徽章...<br>但每一天和你听歌的回忆，都藏在我的心里 💌</p>
-            <p>从今天起，我申请成为你的<br><b>终身VIP听众</b>！</p>
-            <p style="font-size: 12px; color: #ff6b88;">PS：点击猫猫有惊喜~</p>
+            <p>我不小心弄丢了我们的云村徽章...<br>但每一天和你听歌的回忆，都藏在我的心里 💌</p >
+            <p>从今天起，我申请成为你的<br><b style="color: #ff6b88;">终身VIP听众</b>！</p >
+            <p style="font-size: 0.8rem; color: #ff6b88; margin-top: 30px;">❤️ 点击右下角猫猫有惊喜 ❤️</p >
         </div>
     </div>
 
-    <audio id="bgMusic" loop>
-        <source src="https://music.163.com/song/media/outer/url?id=1824045033.mp3" type="audio/mpeg">
+    <!-- Live2D猫猫容器 -->
+    <div id="live2d-container"></div>
+
+    <!-- 音乐播放器控件 -->
+    <div class="music-control" id="musicControl" style="display: none;">
+        <button id="playBtn" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5V19L19 12L8 5Z" fill="#ff6b88"/>
+            </svg>
+        </button>
+        <div class="music-info">正在播放: Troye Sivan - BLUE</div>
+    </div>
+
+    <!-- 音乐 -->
+    <audio id="bgMusic">
+        <source src="https://music.163.com/song/media/outer/url?id=1372796646.mp3" type="audio/mpeg">
     </audio>
 
     <script>
         // 设置密码（改成你们的纪念日）
-        const correctPassword = "0520";
-        const herName = "小可爱";
+        const correctPassword = "52013140212";
+        const herName = "最可爱的空空大人";
 
         // 创建漂浮爱心
         function createHearts() {
             const heartsContainer = document.getElementById('hearts');
             const colors = ['#ff6b88', '#ff8e8e', '#ffb3b3', '#ffd3d3'];
             
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < 20; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'heart';
                 heart.innerHTML = '❤️';
@@ -189,6 +295,7 @@
                 heart.style.top = Math.random() * 100 + 'vh';
                 heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
                 heart.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                heart.style.animationDelay = (Math.random() * 5) + 's';
                 heart.style.color = colors[Math.floor(Math.random() * colors.length)];
                 heartsContainer.appendChild(heart);
             }
@@ -202,28 +309,132 @@
                 document.querySelector('.password-section').style.display = 'none';
                 
                 // 播放背景音乐
-                document.getElementById('bgMusic').play();
+                const bgMusic = document.getElementById('bgMusic');
+                bgMusic.play();
+                document.getElementById('musicControl').style.display = 'flex';
+                
+                // 加载Live2D模型
+                loadLive2D();
                 
                 // 爱心雨特效
                 setInterval(() => {
                     createHearts();
-                }, 300);
+                }, 500);
+                
+                // 容器动画
+                document.querySelector('.container').style.transform = 'perspective(1000px) rotateY(0) rotateX(0)';
+                
             } else {
+                // 错误动画
+                const container = document.querySelector('.container');
+                container.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    container.style.animation = '';
+                }, 500);
+                
                 alert('密码不对哦~试试我们的纪念日？');
                 document.getElementById('password').value = '';
                 document.getElementById('password').focus();
             }
         }
 
-        // 猫猫点击事件
-        document.querySelector('.cute-cat').addEventListener('click', function() {
-            alert('喵~ 原谅我好不好？(｡･ω･｡)ﾉ♡');
+        // 加载Live2D模型
+        async function loadLive2D() {
+            try {
+                const live2dModel = await PIXI.live2d.Live2DModel.from(
+                    'https://cdn.jsdelivr.net/gh/guansss/pixi-live2d-display/test/assets/haru/haru_greeter_t03.model3.json'
+                );
+                
+                const app = new PIXI.Application({
+                    transparent: true,
+                    autoStart: true,
+                    width: 280,
+                    height: 280
+                });
+                
+                document.getElementById('live2d-container').appendChild(app.view);
+                app.stage.addChild(live2dModel);
+                
+                // 调整模型大小和位置
+                live2dModel.scale.set(0.13);
+                live2dModel.x = 140;
+                live2dModel.y = 280;
+                
+                // 点击事件
+                live2dModel.on('pointertap', () => {
+                    // 创建爱心爆炸效果
+                    for (let i = 0; i < 20; i++) {
+                        const heart = document.createElement('div');
+                        heart.className = 'heart';
+                        heart.innerHTML = '❤️';
+                        heart.style.position = 'fixed';
+                        heart.style.left = (Math.random() * 100 + 70) + 'vw';
+                        heart.style.bottom = '100px';
+                        heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                        heart.style.animation = `explode ${Math.random() * 2 + 1}s ease-out forwards`;
+                        heart.style.color = `hsl(${Math.random() * 30 + 330}, 100%, 70%)`;
+                        document.body.appendChild(heart);
+                        
+                        // 动画结束后移除
+                        setTimeout(() => {
+                            heart.remove();
+                        }, 1000);
+                    }
+                    
+                    // 显示特别消息
+                    const messages = [
+                        "最喜欢你了！",
+                        "你是我的唯一❤️",
+                        "永远爱你！",
+                        "喵~抱抱！",
+                        "你是最棒的！"
+                    ];
+                    alert(messages[Math.floor(Math.random() * messages.length)]);
+                });
+                
+                live2dModel.interactive = true;
+                live2dModel.cursor = 'pointer';
+                
+            } catch (e) {
+                console.error('加载Live2D模型失败:', e);
+                // 如果加载失败，显示回退图片
+                const container = document.getElementById('live2d-container');
+                container.innerHTML = '< img src="https://i.imgur.com/3NKy8wl.png" style="width:100%;height:100%;object-fit:contain;">';
+            }
+        }
+
+        // 音乐控制
+        document.getElementById('playBtn').addEventListener('click', function() {
+            const bgMusic = document.getElementById('bgMusic');
+            if (bgMusic.paused) {
+                bgMusic.play();
+                this.innerHTML = `
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5V19L19 12L8 5Z" fill="#ff6b88"/>
+                    </svg>
+                `;
+            } else {
+                bgMusic.pause();
+                this.innerHTML = `
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="6" y="5" width="4" height="14" fill="#ff6b88"/>
+                        <rect x="14" y="5" width="4" height="14" fill="#ff6b88"/>
+                    </svg>
+                `;
+            }
         });
 
         // 页面加载时初始化
         window.onload = function() {
             createHearts();
             document.getElementById('password').focus();
+            
+            // 添加键盘事件
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
         };
     </script>
 </body>
